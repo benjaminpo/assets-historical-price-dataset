@@ -18,18 +18,27 @@ STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
 
 def fetch_spx_components_stock_price():
     """Return nothing."""
-    today = datetime.today().strftime('%Y-%m-%d')
     pass_years = datetime.now() - relativedelta(years=int(MAIN_GET_MAX_NUMBER_OF_YEAR_DATA))
     pass_years = pass_years.strftime('%Y-%m-%d')
+    ticker_list = []
     with open(SPX_CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
-        spx = csv.reader(file)
-        next(spx)
-        for spx_row in spx:
-            stock = spx_row[0].replace(".", "-")
-            data = yf.download(stock, pass_years, today)
-            data.to_csv(STOCK_US_PATH + spx_row[0] + ".csv")
-            print("Downloaded {} data".format(spx_row[0]))
-            logging.info("Downloaded %s data", spx_row[0])
+        list = csv.reader(file)
+        next(list)
+        for ticker in list:
+            ticker_list.append(ticker[0].replace(".", "-"))
+    data = yf.download(
+        tickers = ticker_list,
+        period = MAIN_GET_MAX_NUMBER_OF_YEAR_DATA + 'y',
+        interval = '1d',
+        group_by = 'ticker',
+        auto_adjust = False,
+        prepost = False,
+        threads = True,
+        proxy = None
+    )
+    data = data.T
+    for ticker in ticker_list:
+        data.loc[(ticker,),].T.to_csv(STOCK_US_PATH + ticker + '.csv', sep=',', encoding='utf-8')
 
 
 def main():
