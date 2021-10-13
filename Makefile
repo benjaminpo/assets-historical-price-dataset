@@ -34,7 +34,7 @@ update:
 
 .PHONY: update-dataset
 update-dataset:
-	python main.py
+	make up
 	git add .
 	git commit -m "update datasets"
 	git push -f
