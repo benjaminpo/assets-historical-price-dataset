@@ -32,8 +32,8 @@ update:
 	git commit -m "update"
 	git push -f
 
-.PHONY: update-dataset
-update-dataset:
+.PHONY: updatedata
+updatedata:
 	make up
 	git add .
 	git commit -m "update datasets"
