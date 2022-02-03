@@ -5,10 +5,22 @@ import configparser
 import csv
 import logging
 import yfinance as yf
-
+import requests
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read('config/local.ini')
+
+
+def save_spx_components_stock_to_csv():
+    """Return nothing."""
+    SPX_CONSTITUENTS_URL = CONFIG.get('SPX', 'CONSTITUENTS_URL')
+    SPX_CONSTITUENTS_PATH = CONFIG.get('SPX', 'CONSTITUENTS_PATH')
+
+    req = requests.get(SPX_CONSTITUENTS_URL)
+    url_content = req.content
+    csv_file = open(SPX_CONSTITUENTS_PATH, 'wb')
+    csv_file.write(url_content)
+    csv_file.close()
 
 
 def fetch_spx_components_stock_price():
@@ -19,6 +31,7 @@ def fetch_spx_components_stock_price():
     SPX_CONSTITUENTS_PATH = CONFIG.get('SPX', 'CONSTITUENTS_PATH')
     STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
 
+    save_spx_components_stock_to_csv()
     pass_years = datetime.now() - relativedelta(years=int(MAIN_GET_MAX_NUMBER_OF_YEAR_DATA))
     pass_years = pass_years.strftime('%Y-%m-%d')
     ticker_list = []
