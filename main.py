@@ -9,15 +9,16 @@ import yfinance as yf
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read('config/local.ini')
-FILE_ENCODING = CONFIG.get('FILE', 'ENCODING')
-LOGGING_MAIN_PATH = CONFIG.get('LOGGING', 'MAIN_PATH')
-MAIN_GET_MAX_NUMBER_OF_YEAR_DATA = CONFIG.get('MAIN', 'GET_MAX_NUMBER_OF_YEAR_DATA')
-SPX_CONSTITUENTS_PATH = CONFIG.get('SPX', 'CONSTITUENTS_PATH')
-STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
 
 
 def fetch_spx_components_stock_price():
     """Return nothing."""
+
+    FILE_ENCODING = CONFIG.get('FILE', 'ENCODING')
+    MAIN_GET_MAX_NUMBER_OF_YEAR_DATA = CONFIG.get('MAIN', 'GET_MAX_NUMBER_OF_YEAR_DATA')
+    SPX_CONSTITUENTS_PATH = CONFIG.get('SPX', 'CONSTITUENTS_PATH')
+    STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
+
     pass_years = datetime.now() - relativedelta(years=int(MAIN_GET_MAX_NUMBER_OF_YEAR_DATA))
     pass_years = pass_years.strftime('%Y-%m-%d')
     ticker_list = []
@@ -44,6 +45,7 @@ def fetch_spx_components_stock_price():
 
 
 def main():
+    LOGGING_MAIN_PATH = CONFIG.get('LOGGING', 'MAIN_PATH')
     logging.basicConfig(
         level=logging.DEBUG,
         format='%(asctime)s %(levelname)s %(message)s',
