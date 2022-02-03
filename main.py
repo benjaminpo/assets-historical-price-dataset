@@ -37,6 +37,8 @@ def fetch_spx_components_stock_price():
         proxy = None
     )
     data = data.T
+    data = data.sort_index()
+
     for ticker in ticker_list:
         data.loc[(ticker,),].T.to_csv(STOCK_US_PATH + ticker + '.csv', sep=',', encoding='utf-8')
 
