@@ -1,2 +1,2 @@
 configparser
-yfinance
+yfinance==0.1.70
