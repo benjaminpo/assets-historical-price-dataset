@@ -39,11 +39,11 @@ def fetch_spx_components_stock_price():
     """Return nothing."""
 
     FILE_ENCODING = CONFIG.get('FILE', 'ENCODING')
-    MAIN_GET_MAX_NUMBER_OF_YEAR_DATA = CONFIG.get('MAIN', 'GET_MAX_NUMBER_OF_YEAR_DATA')
+    GET_MAX_NUMBER_OF_YEAR_DATA = CONFIG.get('SPX', 'GET_MAX_NUMBER_OF_YEAR_DATA')
     CONSTITUENTS_PATH = CONFIG.get('SPX', 'CONSTITUENTS_PATH')
     STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
 
-    pass_years = datetime.now() - relativedelta(years=int(MAIN_GET_MAX_NUMBER_OF_YEAR_DATA))
+    pass_years = datetime.now() - relativedelta(years=int(GET_MAX_NUMBER_OF_YEAR_DATA))
     pass_years = pass_years.strftime('%Y-%m-%d')
     ticker_list = []
     with open(CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
@@ -53,7 +53,7 @@ def fetch_spx_components_stock_price():
             ticker_list.append(ticker[0].replace(".", "-"))
     data = yf.download(
         tickers = ticker_list,
-        period = MAIN_GET_MAX_NUMBER_OF_YEAR_DATA + 'y',
+        period = GET_MAX_NUMBER_OF_YEAR_DATA + 'y',
         interval = '1d',
         group_by = 'ticker',
         auto_adjust = False,
@@ -72,11 +72,11 @@ def fetch_nasdaq_components_stock_price():
     """Return nothing."""
 
     FILE_ENCODING = CONFIG.get('FILE', 'ENCODING')
-    MAIN_GET_MAX_NUMBER_OF_YEAR_DATA = CONFIG.get('MAIN', 'GET_MAX_NUMBER_OF_YEAR_DATA')
+    GET_MAX_NUMBER_OF_YEAR_DATA = CONFIG.get('NASDAQ', 'GET_MAX_NUMBER_OF_YEAR_DATA')
     CONSTITUENTS_PATH = CONFIG.get('NASDAQ', 'CONSTITUENTS_PATH')
     STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
 
-    pass_years = datetime.now() - relativedelta(years=int(MAIN_GET_MAX_NUMBER_OF_YEAR_DATA))
+    pass_years = datetime.now() - relativedelta(years=int(GET_MAX_NUMBER_OF_YEAR_DATA))
     pass_years = pass_years.strftime('%Y-%m-%d')
     ticker_list = []
     with open(CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
@@ -86,7 +86,40 @@ def fetch_nasdaq_components_stock_price():
             ticker_list.append(ticker[0].replace(".", "-"))
     data = yf.download(
         tickers = ticker_list,
-        period = MAIN_GET_MAX_NUMBER_OF_YEAR_DATA + 'y',
+        period = GET_MAX_NUMBER_OF_YEAR_DATA + 'y',
+        interval = '1d',
+        group_by = 'ticker',
+        auto_adjust = False,
+        prepost = False,
+        threads = True,
+        proxy = None
+    )
+    data = data.T
+    data = data.sort_index()
+
+    for ticker in ticker_list:
+        data.loc[(ticker,),].T.to_csv(STOCK_US_PATH + ticker + '.csv', sep=',', encoding='utf-8')
+
+
+def fetch_fx_components_stock_price():
+    """Return nothing."""
+
+    FILE_ENCODING = CONFIG.get('FILE', 'ENCODING')
+    GET_MAX_NUMBER_OF_YEAR_DATA = CONFIG.get('FX', 'GET_MAX_NUMBER_OF_YEAR_DATA')
+    CONSTITUENTS_PATH = CONFIG.get('FX', 'CONSTITUENTS_PATH')
+    STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
+
+    pass_years = datetime.now() - relativedelta(years=int(GET_MAX_NUMBER_OF_YEAR_DATA))
+    pass_years = pass_years.strftime('%Y-%m-%d')
+    ticker_list = []
+    with open(CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
+        list = csv.reader(file)
+        next(list)
+        for ticker in list:
+            ticker_list.append(ticker[0].replace(".", "-"))
+    data = yf.download(
+        tickers = ticker_list,
+        period = GET_MAX_NUMBER_OF_YEAR_DATA + 'y',
         interval = '1d',
         group_by = 'ticker',
         auto_adjust = False,
@@ -113,6 +146,7 @@ def main():
     save_nasdaq_components_stock_to_csv()
     fetch_spx_components_stock_price()
     fetch_nasdaq_components_stock_price()
+    fetch_fx_components_stock_price()
 
 
 if __name__ == "__main__":
