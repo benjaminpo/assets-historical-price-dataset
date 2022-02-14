@@ -131,6 +131,7 @@ def fetch_fx_components_stock_price():
     data = data.sort_index()
 
     for ticker in ticker_list:
+        ticker_list.append(ticker[0].replace("=", "-"))
         data.loc[(ticker,),].T.to_csv(STOCK_US_PATH + ticker + '.csv', sep=',', encoding='utf-8')
 
 
