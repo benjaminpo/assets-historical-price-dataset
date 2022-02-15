@@ -1,4 +1,4 @@
-# SPX-components-stock-price
+# us-stocks-historical-price-dataset
 
 ## Prerequisites
 [Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows/) installed; or
