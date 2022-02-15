@@ -53,7 +53,7 @@ def fetch_spx_components_stock_price():
             ticker_list.append(ticker[0].replace(".", "-"))
     data = yf.download(
         tickers = ticker_list,
-        period = GET_MAX_NUMBER_OF_YEAR_DATA + 'y',
+        period = 'max',
         interval = '1d',
         group_by = 'ticker',
         auto_adjust = False,
@@ -86,7 +86,7 @@ def fetch_nasdaq_components_stock_price():
             ticker_list.append(ticker[0].replace(".", "-"))
     data = yf.download(
         tickers = ticker_list,
-        period = GET_MAX_NUMBER_OF_YEAR_DATA + 'y',
+        period = 'max',
         interval = '1d',
         group_by = 'ticker',
         auto_adjust = False,
@@ -119,7 +119,7 @@ def fetch_fx_components_stock_price():
             ticker_list.append(ticker[0].replace(".", "-"))
     data = yf.download(
         tickers = ticker_list,
-        period = GET_MAX_NUMBER_OF_YEAR_DATA + 'y',
+        period = 'max',
         interval = '1d',
         group_by = 'ticker',
         auto_adjust = False,
