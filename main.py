@@ -43,8 +43,6 @@ def fetch_spx_components_stock_price():
     CONSTITUENTS_PATH = CONFIG.get('SPX', 'CONSTITUENTS_PATH')
     STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
 
-    pass_years = datetime.now() - relativedelta(years=int(GET_MAX_NUMBER_OF_YEAR_DATA))
-    pass_years = pass_years.strftime('%Y-%m-%d')
     ticker_list = []
     with open(CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
         list = csv.reader(file)
@@ -65,6 +63,8 @@ def fetch_spx_components_stock_price():
     data = data.sort_index()
 
     for ticker in ticker_list:
+        ticker_list.append(ticker[0].replace(".", "-"))
+        ticker_list.append(ticker[0].replace("=", "-"))
         data.loc[(ticker,),].T.to_csv(STOCK_US_PATH + ticker + '.csv', sep=',', encoding='utf-8')
 
 
@@ -76,8 +76,6 @@ def fetch_nasdaq_components_stock_price():
     CONSTITUENTS_PATH = CONFIG.get('NASDAQ', 'CONSTITUENTS_PATH')
     STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
 
-    pass_years = datetime.now() - relativedelta(years=int(GET_MAX_NUMBER_OF_YEAR_DATA))
-    pass_years = pass_years.strftime('%Y-%m-%d')
     ticker_list = []
     with open(CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
         list = csv.reader(file)
@@ -98,6 +96,8 @@ def fetch_nasdaq_components_stock_price():
     data = data.sort_index()
 
     for ticker in ticker_list:
+        ticker_list.append(ticker[0].replace(".", "-"))
+        ticker_list.append(ticker[0].replace("=", "-"))
         data.loc[(ticker,),].T.to_csv(STOCK_US_PATH + ticker + '.csv', sep=',', encoding='utf-8')
 
 
@@ -109,8 +109,6 @@ def fetch_fx_components_stock_price():
     CONSTITUENTS_PATH = CONFIG.get('FX', 'CONSTITUENTS_PATH')
     STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
 
-    pass_years = datetime.now() - relativedelta(years=int(GET_MAX_NUMBER_OF_YEAR_DATA))
-    pass_years = pass_years.strftime('%Y-%m-%d')
     ticker_list = []
     with open(CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
         list = csv.reader(file)
@@ -131,6 +129,7 @@ def fetch_fx_components_stock_price():
     data = data.sort_index()
 
     for ticker in ticker_list:
+        ticker_list.append(ticker[0].replace(".", "-"))
         ticker_list.append(ticker[0].replace("=", "-"))
         data.loc[(ticker,),].T.to_csv(STOCK_US_PATH + ticker + '.csv', sep=',', encoding='utf-8')
 
