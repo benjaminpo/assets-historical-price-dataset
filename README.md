@@ -1,4 +1,6 @@
-# SPX-components-stock-price
+# assets-historical-price-dataset
+
+included S&P500, nasdaq stocks and fx
 
 ## Prerequisites
 [Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows/) installed; or
