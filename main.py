@@ -1,137 +1,105 @@
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
-
 import configparser
 import csv
 import logging
-import yfinance as yf
+
 import requests
+import yfinance as yf
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read('config/local.ini')
 
+FILE_ENCODING = CONFIG.get('FILE', 'ENCODING')
+FX_CONSTITUENTS_PATH = CONFIG.get('FX', 'CONSTITUENTS_PATH')
+NASDAQ_CONSTITUENTS_PATH = CONFIG.get('NASDAQ', 'CONSTITUENTS_PATH')
+NASDAQ_CONSTITUENTS_PATH = CONFIG.get('NASDAQ', 'CONSTITUENTS_PATH')
+NASDAQ_CONSTITUENTS_URL = CONFIG.get('NASDAQ', 'CONSTITUENTS_URL')
+SPX_CONSTITUENTS_PATH = CONFIG.get('SPX', 'CONSTITUENTS_PATH')
+SPX_CONSTITUENTS_PATH = CONFIG.get('SPX', 'CONSTITUENTS_PATH')
+SPX_CONSTITUENTS_URL = CONFIG.get('SPX', 'CONSTITUENTS_URL')
+DATA_PATH = CONFIG.get('DATA', 'PATH')
 
 def save_spx_components_stock_to_csv():
     """Return nothing."""
-    CONSTITUENTS_URL = CONFIG.get('SPX', 'CONSTITUENTS_URL')
-    CONSTITUENTS_PATH = CONFIG.get('SPX', 'CONSTITUENTS_PATH')
-
-    req = requests.get(CONSTITUENTS_URL)
+    req = requests.get(SPX_CONSTITUENTS_URL)
     url_content = req.content
-    csv_file = open(CONSTITUENTS_PATH, 'wb')
+    csv_file = open(SPX_CONSTITUENTS_PATH, 'wb')
     csv_file.write(url_content)
     csv_file.close()
 
 
 def save_nasdaq_components_stock_to_csv():
     """Return nothing."""
-    CONSTITUENTS_URL = CONFIG.get('NASDAQ', 'CONSTITUENTS_URL')
-    CONSTITUENTS_PATH = CONFIG.get('NASDAQ', 'CONSTITUENTS_PATH')
-
-    req = requests.get(CONSTITUENTS_URL)
+    req = requests.get(NASDAQ_CONSTITUENTS_URL)
     url_content = req.content
-    csv_file = open(CONSTITUENTS_PATH, 'wb')
+    csv_file = open(NASDAQ_CONSTITUENTS_PATH, 'wb')
     csv_file.write(url_content)
     csv_file.close()
 
 
-def fetch_spx_components_stock_price():
+def fetch_spx_components_stock_price(interval = '1d', period = 'max'):
     """Return nothing."""
-
-    FILE_ENCODING = CONFIG.get('FILE', 'ENCODING')
-    GET_MAX_NUMBER_OF_YEAR_DATA = CONFIG.get('SPX', 'GET_MAX_NUMBER_OF_YEAR_DATA')
-    CONSTITUENTS_PATH = CONFIG.get('SPX', 'CONSTITUENTS_PATH')
-    STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
-
     ticker_list = []
-    with open(CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
+    with open(SPX_CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
         list = csv.reader(file)
         next(list)
         for ticker in list:
             ticker_list.append(ticker[0].replace(".", "-"))
     data = yf.download(
         tickers = ticker_list,
-        period = 'max',
-        interval = '1d',
+        period = period,
+        interval = interval,
         group_by = 'ticker',
-        auto_adjust = False,
-        prepost = False,
-        threads = True,
-        proxy = None
+        threads = True
     )
     data = data.T
     data = data.sort_index()
-
     for ticker in ticker_list:
-        ticker_list.append(ticker[0].replace(".", "-"))
-        ticker_list.append(ticker[0].replace("=", "-"))
-        data.loc[(ticker,),].T.to_csv(STOCK_US_PATH + ticker + '.csv', sep=',', encoding='utf-8')
+        filename = ticker.replace("=", "-").replace(".", "-")
+        data.loc[(ticker,),].T.to_csv(DATA_PATH + interval + '/' + filename + '.csv', sep=',', encoding='utf-8')
 
 
-def fetch_nasdaq_components_stock_price():
+def fetch_nasdaq_components_stock_price(interval = '1d', period = 'max'):
     """Return nothing."""
-
-    FILE_ENCODING = CONFIG.get('FILE', 'ENCODING')
-    GET_MAX_NUMBER_OF_YEAR_DATA = CONFIG.get('NASDAQ', 'GET_MAX_NUMBER_OF_YEAR_DATA')
-    CONSTITUENTS_PATH = CONFIG.get('NASDAQ', 'CONSTITUENTS_PATH')
-    STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
-
     ticker_list = []
-    with open(CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
+    with open(NASDAQ_CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
         list = csv.reader(file)
         next(list)
         for ticker in list:
             ticker_list.append(ticker[0].replace(".", "-"))
     data = yf.download(
         tickers = ticker_list,
-        period = 'max',
-        interval = '1d',
+        period = period,
+        interval = interval,
         group_by = 'ticker',
-        auto_adjust = False,
-        prepost = False,
-        threads = True,
-        proxy = None
+        threads = True
     )
     data = data.T
     data = data.sort_index()
-
     for ticker in ticker_list:
-        ticker_list.append(ticker[0].replace(".", "-"))
-        ticker_list.append(ticker[0].replace("=", "-"))
-        data.loc[(ticker,),].T.to_csv(STOCK_US_PATH + ticker + '.csv', sep=',', encoding='utf-8')
+        filename = ticker.replace("=", "-").replace(".", "-")
+        data.loc[(ticker,),].T.to_csv(DATA_PATH + interval + '/' + filename + '.csv', sep=',', encoding='utf-8')
 
 
-def fetch_fx_components_stock_price():
+def fetch_fx_components_stock_price(interval = '1d', period = 'max'):
     """Return nothing."""
-
-    FILE_ENCODING = CONFIG.get('FILE', 'ENCODING')
-    GET_MAX_NUMBER_OF_YEAR_DATA = CONFIG.get('FX', 'GET_MAX_NUMBER_OF_YEAR_DATA')
-    CONSTITUENTS_PATH = CONFIG.get('FX', 'CONSTITUENTS_PATH')
-    STOCK_US_PATH = CONFIG.get('STOCK_US', 'PATH')
-
     ticker_list = []
-    with open(CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
+    with open(FX_CONSTITUENTS_PATH, newline='', encoding=FILE_ENCODING) as file:
         list = csv.reader(file)
         next(list)
         for ticker in list:
             ticker_list.append(ticker[0].replace(".", "-"))
     data = yf.download(
         tickers = ticker_list,
-        period = 'max',
-        interval = '1d',
+        period = period,
+        interval = interval,
         group_by = 'ticker',
-        auto_adjust = False,
-        prepost = False,
-        threads = True,
-        proxy = None
+        threads = True
     )
     data = data.T
     data = data.sort_index()
-
     for ticker in ticker_list:
-        ticker_list.append(ticker[0].replace(".", "-"))
-        ticker_list.append(ticker[0].replace("=", "-"))
-        data.loc[(ticker,),].T.to_csv(STOCK_US_PATH + ticker + '.csv', sep=',', encoding='utf-8')
+        filename = ticker.replace("=", "-").replace(".", "-")
+        data.loc[(ticker,),].T.to_csv(DATA_PATH + interval + '/' + filename + '.csv', sep=',', encoding='utf-8')
 
 
 def main():
@@ -144,10 +112,12 @@ def main():
     )
     save_spx_components_stock_to_csv()
     save_nasdaq_components_stock_to_csv()
-    fetch_spx_components_stock_price()
-    fetch_nasdaq_components_stock_price()
-    fetch_fx_components_stock_price()
-
+    fetch_fx_components_stock_price('1d', 'max')
+    fetch_fx_components_stock_price('1m', '7d')
+    fetch_nasdaq_components_stock_price('1d')
+    fetch_nasdaq_components_stock_price('1m', '7d')
+    fetch_spx_components_stock_price('1d')
+    fetch_spx_components_stock_price('1m', '7d')
 
 if __name__ == "__main__":
     main()
