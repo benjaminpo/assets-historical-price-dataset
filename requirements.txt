@@ -1,3 +1,4 @@
 configparser~=5.2.0
 requests~=2.26.0
 yfinance==0.1.70
+PyYAML~=6.0
