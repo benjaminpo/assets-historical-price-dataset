@@ -1,4 +1,4 @@
-import configparser
+import yaml
 import logging
 
 from src.module.common import save_spx_components_stock_to_file, save_nasdaq_components_stock_to_file, \
@@ -6,9 +6,8 @@ from src.module.common import save_spx_components_stock_to_file, save_nasdaq_com
 
 
 def main():
-    config= configparser.ConfigParser()
-    config.read('../config/local.ini')
-    logging_main_path= config.get('LOGGING', 'MAIN_PATH')
+    config = yaml.safe_load(open('../config/local.yml', 'r'))
+    logging_main_path = config['LOGGING']['MAIN_PATH']
     logging.basicConfig(
         level=logging.DEBUG,
         format='%(asctime)s %(levelname)s %(message)s',
@@ -19,10 +18,11 @@ def main():
     save_nasdaq_components_stock_to_file()
     fetch_fx_components_stock_price('1d', 'max')
     fetch_fx_components_stock_price('1m', '7d')
-    # fetch_nasdaq_components_stock_price('1d', 'max')
-    # fetch_nasdaq_components_stock_price('1m', '7d')
-    # fetch_spx_components_stock_price('1d', 'max')
-    # fetch_spx_components_stock_price('1m', '7d')
+    fetch_nasdaq_components_stock_price('1d', 'max')
+    fetch_nasdaq_components_stock_price('1m', '7d')
+    fetch_spx_components_stock_price('1d', 'max')
+    fetch_spx_components_stock_price('1m', '7d')
 
 
-main()
+if __name__ == "__main__":
+    main()

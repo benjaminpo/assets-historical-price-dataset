@@ -1,4 +1,3 @@
-import configparser
 import csv
 
 import requests
@@ -50,7 +49,7 @@ def fetch_spx_components_stock_price(interval='1d', period='max'):
     data = data.sort_index()
     for ticker in ticker_list:
         filename = ticker.replace("=", "-").replace(".", "-")
-        data.loc[(ticker,),].T.to_csv(data_path + interval + '/' + filename + '.csv', sep=',', encoding='utf-8')
+        data.loc[(ticker,), ].T.to_csv(data_path + interval + '/' + filename + '.csv', sep=',', encoding='utf-8')
 
 
 def fetch_nasdaq_components_stock_price(interval='1d', period='max'):
@@ -76,7 +75,7 @@ def fetch_nasdaq_components_stock_price(interval='1d', period='max'):
     data = data.sort_index()
     for ticker in ticker_list:
         filename = ticker.replace("=", "-").replace(".", "-")
-        data.loc[(ticker,),].T.to_csv(data_path + interval + '/' + filename + '.csv', sep=',', encoding='utf-8')
+        data.loc[(ticker,), ].T.to_csv(data_path + interval + '/' + filename + '.csv', sep=',', encoding='utf-8')
 
 
 def fetch_fx_components_stock_price(interval='1d', period='max'):
@@ -102,4 +101,4 @@ def fetch_fx_components_stock_price(interval='1d', period='max'):
     data = data.sort_index()
     for ticker in ticker_list:
         filename = ticker.replace("=", "-").replace(".", "-")
-        data.loc[(ticker,),].T.to_csv(data_path + interval + '/' + filename + '.csv', sep=',', encoding='utf-8')
+        data.loc[(ticker,), ].T.to_csv(data_path + interval + '/' + filename + '.csv', sep=',', encoding='utf-8')
