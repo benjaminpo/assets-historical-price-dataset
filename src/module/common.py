@@ -16,20 +16,24 @@ def download_and_save(url, path):
 
 def save_spx_components_stock_to_file():
     """Return nothing."""
-    config = yaml.safe_load(open('../config/local.yml', 'r'))
+    config = load_config()
     download_and_save(config['SPX']['CONSTITUENTS_URL'], config['SPX']['CONSTITUENTS_PATH'])
+
+
+def load_config():
+    return yaml.safe_load(open('../config/local.yml', 'r'))
 
 
 def save_nasdaq_components_stock_to_file():
     """Return nothing."""
-    config = yaml.safe_load(open('../config/local.yml', 'r'))
+    config = load_config()
     download_and_save(config['NASDAQ']['CONSTITUENTS_URL'], config['NASDAQ']['CONSTITUENTS_PATH'])
 
 
 def fetch_spx_components_stock_price(interval='1d', period='max'):
     """Return nothing."""
     ticker_list = []
-    config = yaml.safe_load(open('../config/local.yml', 'r'))
+    config = load_config()
     file_encoding = config['FILE']['ENCODING']
     spx_constituents_path = config['SPX']['CONSTITUENTS_PATH']
     data_path = config['DATA']['PATH']
@@ -55,7 +59,7 @@ def fetch_spx_components_stock_price(interval='1d', period='max'):
 def fetch_nasdaq_components_stock_price(interval='1d', period='max'):
     """Return nothing."""
     ticker_list = []
-    config = yaml.safe_load(open('../config/local.yml', 'r'))
+    config = load_config()
     file_encoding = config['FILE']['ENCODING']
     nasdaq_constituents_path = config['NASDAQ']['CONSTITUENTS_PATH']
     data_path = config['DATA']['PATH']
@@ -81,7 +85,7 @@ def fetch_nasdaq_components_stock_price(interval='1d', period='max'):
 def fetch_fx_components_stock_price(interval='1d', period='max'):
     """Return nothing."""
     ticker_list = []
-    config = yaml.safe_load(open('../config/local.yml', 'r'))
+    config = load_config()
     file_encoding = config['FILE']['ENCODING']
     fx_constituents_path = config['FX']['CONSTITUENTS_PATH']
     data_path = config['DATA']['PATH']
