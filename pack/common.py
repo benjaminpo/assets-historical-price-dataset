@@ -21,7 +21,7 @@ def save_spx_components_stock_to_file():
 
 
 def load_config():
-    return yaml.safe_load(open('../config/local.yml', 'r'))
+    return yaml.safe_load(open('./config/local.yml', 'r'))
 
 
 def save_nasdaq_components_stock_to_file():

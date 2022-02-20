@@ -7,14 +7,14 @@ RUN apt-get install -y --no-install-recommends build-essential gcc
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 # USER myuser
-COPY src/main.py .
+COPY main.py .
 COPY config/ config/
 COPY data/ data/
 COPY logs/ logs/
 
 FROM python:3.9.10-slim-bullseye AS build-image
 # COPY --from=compile-image /opt/venv /opt/venv
-COPY --from=compile-image src/main.py main.py
+COPY --from=compile-image main.py main.py
 COPY --from=compile-image config config
 COPY --from=compile-image data data
 COPY --from=compile-image logs logs
