@@ -30,8 +30,9 @@ def save_nasdaq_components_stock_to_file():
     download_and_save(config['NASDAQ']['CONSTITUENTS_URL'], config['NASDAQ']['CONSTITUENTS_PATH'])
 
 
-def fetch_assets(config, constituents_path, interval, period):
+def fetch_assets(constituents_path, interval, period):
     ticker_list = []
+    config = load_config()
     file_encoding = config['FILE']['ENCODING']
     data_path = config['DATA']['PATH']
     with open(constituents_path, newline='', encoding=file_encoding) as file:
@@ -53,29 +54,33 @@ def fetch_assets(config, constituents_path, interval, period):
         data.loc[(ticker,),].T.to_csv(data_path + interval + '/' + filename + '.csv', sep=',', encoding='utf-8')
 
 
-def fetch_spx_components_stock_price(interval='1d', period='max'):
+def fetch_spx_components_stock_price():
     """Return nothing."""
     config = load_config()
     constituents_path = config['SPX']['CONSTITUENTS_PATH']
-    fetch_assets(config, constituents_path, interval, period)
+    fetch_assets(constituents_path, '1d', 'max')
+    fetch_assets(constituents_path, '1m', '7d')
 
 
-def fetch_nasdaq_components_stock_price(interval='1d', period='max'):
+def fetch_nasdaq_components_stock_price():
     """Return nothing."""
     config = load_config()
     constituents_path = config['NASDAQ']['CONSTITUENTS_PATH']
-    fetch_assets(config, constituents_path, interval, period)
+    fetch_assets(constituents_path, '1d', 'max')
+    fetch_assets(constituents_path, '1m', '7d')
 
 
-def fetch_fx_components_stock_price(interval='1d', period='max'):
+def fetch_fx_components_stock_price():
     """Return nothing."""
     config = load_config()
     constituents_path = config['FX']['CONSTITUENTS_PATH']
-    fetch_assets(config, constituents_path, interval, period)
+    fetch_assets(constituents_path, '1d', 'max')
+    fetch_assets(constituents_path, '1m', '7d')
 
 
-def fetch_etf_components_stock_price(interval='1d', period='max'):
+def fetch_etf_components_stock_price():
     """Return nothing."""
     config = load_config()
     constituents_path = config['ETF']['CONSTITUENTS_PATH']
-    fetch_assets(config, constituents_path, interval, period)
+    fetch_assets(constituents_path, '1d', 'max')
+    fetch_assets(constituents_path, '1m', '7d')

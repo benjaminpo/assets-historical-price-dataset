@@ -1,7 +1,8 @@
 import logging
 
-from pack.common import save_spx_components_stock_to_file, save_nasdaq_components_stock_to_file, \
-    fetch_fx_components_stock_price, load_config, fetch_nasdaq_components_stock_price, fetch_spx_components_stock_price
+from pack.util import save_spx_components_stock_to_file, save_nasdaq_components_stock_to_file, \
+    fetch_fx_components_stock_price, load_config, fetch_nasdaq_components_stock_price, fetch_etf_components_stock_price, \
+    fetch_spx_components_stock_price
 
 
 def main():
@@ -15,12 +16,10 @@ def main():
     )
     save_spx_components_stock_to_file()
     save_nasdaq_components_stock_to_file()
-    fetch_fx_components_stock_price('1d', 'max')
-    fetch_fx_components_stock_price('1m', '7d')
-    fetch_nasdaq_components_stock_price('1d', 'max')
-    fetch_nasdaq_components_stock_price('1m', '7d')
-    fetch_spx_components_stock_price('1d', 'max')
-    fetch_spx_components_stock_price('1m', '7d')
+    fetch_fx_components_stock_price()
+    fetch_nasdaq_components_stock_price()
+    fetch_spx_components_stock_price()
+    fetch_etf_components_stock_price()
 
 
 if __name__ == "__main__":
