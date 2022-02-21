@@ -1,3 +1,6 @@
+DATA:
+  PATH:  "./data/"
+
 DOWNLOAD:
   PATH: "./data/"
 
@@ -7,19 +10,16 @@ FILE:
 LOGGING:
   MAIN_PATH: "./logs/main.log"
 
-SPX:
-  CONSTITUENTS_PATH: "./data/index/constituents/us/spx.csv"
-  CONSTITUENTS_URL: "https://raw.githubusercontent.com/datasets/s-and-p-500-companies/master/data/constituents.csv"
-  GET_MAX_NUMBER_OF_YEAR_DATA:  10
+ETF:
+  CONSTITUENTS_PATH: "./data/index/constituents/us/etf.csv"
+
+FX:
+  CONSTITUENTS_PATH: "./data/index/constituents/us/fx.csv"
 
 NASDAQ:
   CONSTITUENTS_PATH: "./data/index/constituents/us/nasdaq.csv"
   CONSTITUENTS_URL: "https://raw.githubusercontent.com/datasets/nasdaq-listings/master/data/nasdaq-listed-symbols.csv"
-  GET_MAX_NUMBER_OF_YEAR_DATA:  10
 
-FX:
-  CONSTITUENTS_PATH: "./data/index/constituents/us/fx.csv"
-  GET_MAX_NUMBER_OF_YEAR_DATA:  10
-
-DATA:
-  PATH:  "./data/"
+SPX:
+  CONSTITUENTS_PATH: "./data/index/constituents/us/spx.csv"
+  CONSTITUENTS_URL: "https://raw.githubusercontent.com/datasets/s-and-p-500-companies/master/data/constituents.csv"
