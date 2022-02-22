@@ -9,6 +9,7 @@ FILE:
 
 LOGGING:
   MAIN_PATH: "./logs/main.log"
+  LEVEL: DEBUG
 
 ETF:
   CONSTITUENTS_PATH: "./data/index/constituents/us/etf.csv"
